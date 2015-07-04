@@ -1,0 +1,22 @@
+{
+  "name": "spacelink",
+  "version": "0.0.1",
+  "description": "spacelink",
+  "scripts": {
+    "start": "http-server ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/256dpi/spacelink.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/256dpi/spacelink/issues"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "devDependencies": {
+    "http-server": "^0.8.0"
+  }
+}
