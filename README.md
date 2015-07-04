@@ -5,4 +5,5 @@
 ## Technologies
 
 - <http://mozvr.com>
+- <http://peerjs.com>
 - <http://threejs.org>

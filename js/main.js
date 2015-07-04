@@ -1,53 +1,40 @@
+/* Base Stuff */
 
-var renderer = new THREE.WebGLRenderer( { antialias: true } );
+var parameters = (function() {
+	var parameters = {};
+	var parts = window.location.search.substr(1).split('&');
+	for (var i = 0; i < parts.length; i++) {
+		var parameter = parts[i].split('=');
+		parameters[parameter[0]] = parameter[1];
+	}
+	return parameters;
+})();
 
-document.body.appendChild(renderer.domElement);
+/* Peer Stuff */
 
-var scene = new THREE.Scene();
+$(function(){
+  var peer = new Peer(parameters.id, {key: ''});
 
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0, 100);
+  peer.on('open', function(id) {
+    $('#peer-id').html(id);
+    $('#connected').show();
 
-var controls = new THREE.VRControls(camera);
+    peer.on('connection', function(conn){
+      console.log('new connection', conn);
 
-var effect = new THREE.VREffect(renderer);
-effect.setSize(window.innerWidth, window.innerHeight);
+      conn.on('data', function(data) {
+        console.log('Received', data);
+      });
+    });
 
-var geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-var material = new THREE.MeshNormalMaterial();
-var cube = new THREE.Mesh(geometry, material);
+    $('#open').click(function(){
+      var conn = peer.connect($('#peer').val());
 
-cube.position.z = -0.3;
+      conn.on('open', function() {
+        console.log('opened connection', conn);
 
-scene.add(cube);
-
-function animate() {
-  cube.rotation.y += 0.01;
-  controls.update();
-  effect.render(scene, camera);
-  requestAnimationFrame(animate);
-}
-
-animate();
-
-document.body.addEventListener('dblclick', function() {
-  effect.setFullScreen(true);
+        conn.send('Hello!');
+      });
+    });
+  });
 });
-
-function onkey(event) {
-  event.preventDefault();
-
-  if (event.keyCode == 90) { // z
-    controls.zeroSensor();
-  }
-};
-
-window.addEventListener('keydown', onkey, true);
-
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  effect.setSize(window.innerWidth, window.innerHeight);
-}
-
-window.addEventListener('resize', onWindowResize, false);
