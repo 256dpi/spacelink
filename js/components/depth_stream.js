@@ -1,5 +1,5 @@
 /**
- * Create new Depthstream client.
+ * Create new DepthStream client.
  *
  * @param address
  * @param stream
