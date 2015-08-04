@@ -13,23 +13,21 @@ $(function(){
 
   scene.add(new THREE.AxisHelper(100));
 
-  var particles = new THREE.Geometry();
-  var pMaterial = new THREE.PointCloudMaterial({
-    color: 0xFFFFFF,
-    size: 1
-  });
+  new DepthRender(
+    'ws://10.128.137.196:9090',
+    4,
+    scene,
+    -Math.PI/2,
+    render
+  );
 
-  var pc = new DepthTransformation(640 / 4, 480 / 4, particles.vertices);
-
-  var particleSystem = new THREE.PointCloud(particles, pMaterial);
-
-  scene.add(particleSystem);
-
-  new DepthStream('ws://10.128.137.196:9091', true, function(array){
-    pc.update(array);
-    particles.verticesNeedUpdate = true;
-    render();
-  });
+  new DepthRender(
+    'ws://10.128.137.196:9091',
+    4,
+    scene,
+    Math.PI/2,
+    render
+  );
 
   render();
 
