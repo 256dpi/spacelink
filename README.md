@@ -4,6 +4,6 @@
 
 ## Technologies
 
+- <https://github.com/256dpi/depthstream>
 - <http://mozvr.com>
-- <http://peerjs.com>
 - <http://threejs.org>

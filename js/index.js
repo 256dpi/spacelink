@@ -13,7 +13,7 @@ var parameters = (function() {
 /* Peer Stuff */
 
 $(function(){
-  var peer = new Peer(parameters.id, {key: ''});
+  var peer = new Peer(parameters.id, {key: '3buskm21vw019k9'});
 
   peer.on('open', function(id) {
     $('#peer-id').html(id);

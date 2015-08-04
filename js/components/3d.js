@@ -41,7 +41,7 @@ function do3D() {
     if (event.keyCode == 90) { // z
       controls.zeroSensor();
     }
-  };
+  }
 
   window.addEventListener('keydown', onkey, true);
 
