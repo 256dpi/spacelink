@@ -17,7 +17,7 @@ PointCloud.prototype.update = function(array){
     for(var x=0; x < this.width; x++) {
       var index = y * this.width + x;
       var depth = array[index];
-      this.vectors[index].set(x, y, depth / 100);
+      this.vectors[index].set(x, -y, -(depth / 100));
     }
   }
 };
