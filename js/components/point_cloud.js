@@ -13,7 +13,7 @@ function PointCloud(vectors) {
 
   for(var y=0; y < this.height; y++) {
     for(var x=0; x < this.width; x++) {
-      this.vectors.push(new THREE.Vector3(x, y, 0));
+      this.vectors.push(new THREE.Vector3(0, 0, 0));
     }
   }
 }
@@ -24,8 +24,8 @@ PointCloud.prototype.update = function(array){
       var index = y * this.width + x;
 
       var zw = array[index];
-      var xw = zw * x / this.f;
-      var yw = zw * y / this.f;
+      var xw = zw * (x - this.width / 2) / this.f;
+      var yw = zw * (y - this.height / 2) / this.f;
 
       this.vectors[index].set(xw / 10, yw / 10, zw / 10);
     }
