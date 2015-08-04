@@ -15,7 +15,7 @@ $(function(){
 
   new DepthRender(
     'ws://10.128.137.196:9090',
-    4,
+    8,
     scene,
     -Math.PI/2,
     render
@@ -23,7 +23,7 @@ $(function(){
 
   new DepthRender(
     'ws://10.128.137.196:9091',
-    4,
+    8,
     scene,
     Math.PI/2,
     render
