@@ -1,9 +1,15 @@
+/*
+  Calculations: http://stackoverflow.com/questions/17832238/kinect-intrinsic-parameters-from-field-of-view/18199938#18199938
+ */
+
 function PointCloud(vectors) {
   this.width = 640 / 4;
   this.height = 480 / 4;
 
   this.size = this.width * this.height;
   this.vectors = vectors;
+
+  this.f = this.height / (2 * Math.tan(43 / 2)); // 43°
 
   for(var y=0; y < this.height; y++) {
     for(var x=0; x < this.width; x++) {
@@ -16,8 +22,12 @@ PointCloud.prototype.update = function(array){
   for(var y=0; y < this.height; y++) {
     for(var x=0; x < this.width; x++) {
       var index = y * this.width + x;
-      var depth = array[index];
-      this.vectors[index].set(x, -y, -(depth / 100));
+
+      var zw = array[index];
+      var xw = zw * x / this.f;
+      var yw = zw * y / this.f;
+
+      this.vectors[index].set(xw / 10, yw / 10, zw / 10);
     }
   }
 };
