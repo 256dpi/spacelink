@@ -6,26 +6,23 @@
  * @constructor
  */
 function DepthStream(stream, callback){
-  var ws = this.ws = new WebSocket('ws://localhost:9090');
+  var ws = new WebSocket('ws://localhost:9090');
   ws.binaryType = 'arraybuffer';
 
   ws.onopen = function() {
     if(stream) {
       ws.send('*');
+    } else {
+      ws.send('1');
     }
   };
 
   ws.onmessage = function(message) {
     callback(new Uint16Array(message.data));
   };
-}
 
-/**
- * Get a single frame.
- */
-DepthStream.prototype.get = function(){
-  this.ws.send('1');
-};
+  this.ws = ws;
+}
 
 /**
  * Close client.
