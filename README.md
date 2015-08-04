@@ -4,6 +4,7 @@
 
 ## Technologies
 
-- <https://github.com/256dpi/depthstream>
+- <http://simplewebrtc.com>
+- <http://github.com/256dpi/depthstream>
 - <http://mozvr.com>
 - <http://threejs.org>
