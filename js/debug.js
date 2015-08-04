@@ -19,7 +19,7 @@ $(function(){
     size: 1
   });
 
-  var pc = new PointCloud(particles.vertices);
+  var pc = new DepthTransformation(640 / 4, 480 / 4, particles.vertices);
 
   var particleSystem = new THREE.PointCloud(particles, pMaterial);
 
