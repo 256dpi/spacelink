@@ -1,3 +1,9 @@
+/**
+ * Create a new Network.
+ *
+ * @param shareAudio
+ * @constructor
+ */
 function Network(shareAudio) {
   this.shareAudio = shareAudio;
 
@@ -5,15 +11,27 @@ function Network(shareAudio) {
   this.callbacks = {};
 }
 
+/**
+ * Register event handler for 'found' and 'lost'.
+ *
+ * @param event
+ * @param callback
+ */
 Network.prototype.on = function(event, callback) {
   this.callbacks[event] = callback;
 };
 
+/**
+ * @private
+ */
 Network.prototype.emit = function(event, data) {
   var cb = this.callbacks[event];
   if(cb) cb(data);
 };
 
+/**
+ * Connect to the network.
+ */
 Network.prototype.connect = function(){
   var self = this;
 
@@ -41,7 +59,62 @@ Network.prototype.connect = function(){
   });
 };
 
+Network.prototype.broadcast = function(data) {
+  this.nodes.forEach(function(node){
+    node.send(data);
+  });
+};
+
+/**
+ * Wrapper for a connected peer.
+ *
+ * @param peer
+ * @constructor
+ */
 function Node(peer){
+  var self = this;
+
   this.peer = peer;
   this.peer.node = this;
+
+  this.callbacks = {};
+  this.channel = this.peer.getDataChannel('data');
+
+  this.channel.onmessage = function(event) {
+    self.emit('message', JSON.parse(event.data));
+  };
+
+  this.peer.on('channelOpen', function(channel){
+    if(channel.label == 'data') {
+      self.channel = channel;
+      self.emit('ready');
+    }
+  });
 }
+
+/**
+ * Register event handler for 'message' and 'ready'.
+ *
+ * @param event
+ * @param callback
+ */
+Node.prototype.on = function(event, callback) {
+  this.callbacks[event] = callback;
+};
+
+/**
+ * @private
+ */
+Node.prototype.emit = function(event, data) {
+  var cb = this.callbacks[event];
+  if(cb) cb(data);
+};
+
+/**
+ * Send data to peer.
+ *
+ * @param data
+ */
+Node.prototype.send = function(data) {
+  this.channel.send(JSON.stringify(data));
+};
