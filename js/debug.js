@@ -25,7 +25,7 @@ $(function(){
 
   scene.add(particleSystem);
 
-  new DepthStream(true, function(array){
+  new DepthStream('ws://10.128.137.196:9091', true, function(array){
     pc.update(array);
     particles.verticesNeedUpdate = true;
     render();

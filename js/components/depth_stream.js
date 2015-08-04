@@ -1,12 +1,13 @@
 /**
  * Create new Depthstream client.
  *
+ * @param address
  * @param stream
  * @param callback
  * @constructor
  */
-function DepthStream(stream, callback){
-  var ws = new WebSocket('ws://localhost:9090');
+function DepthStream(address, stream, callback){
+  var ws = new WebSocket(address);
   ws.binaryType = 'arraybuffer';
 
   ws.onopen = function() {
