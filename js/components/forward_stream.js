@@ -5,9 +5,10 @@
  *
  * @param stream
  * @param network
+ * @param drop
  * @constructor
  */
-function ForwardStream(stream, network){
+function ForwardStream(stream, network, drop){
   var i = 0;
 
   function ab2str(buf) {
@@ -20,7 +21,7 @@ function ForwardStream(stream, network){
       if(bytes) {
         network.broadcast({stream: bytes});
       }
-    } else if(i == 30) {
+    } else if(i == drop) {
       i = -1;
     }
 

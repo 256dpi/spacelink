@@ -41,7 +41,7 @@ $(function(){
 
   n.connect();
 
-  new ForwardStream(ls, n);
+  new ForwardStream(ls, n, 4);
 
   render();
 
