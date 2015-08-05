@@ -10,11 +10,16 @@
 function ForwardStream(stream, network){
   var i = 0;
 
+  function ab2str(buf) {
+    return String.fromCharCode.apply(null, new Uint16Array(buf));
+  }
+
   stream.on('data', function(data){
     if(i == 0) {
-      LZMA.compress(new Int8Array(data), 1, function(bytes){
+      var bytes = LZString.compressToUTF16(ab2str(data));
+      if(bytes) {
         network.broadcast({stream: bytes});
-      });
+      }
     } else if(i == 30) {
       i = -1;
     }
