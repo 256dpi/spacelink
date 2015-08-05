@@ -14,7 +14,7 @@ $(function(){
   var controls = new THREE.OrbitControls(camera);
   controls.addEventListener('change', render);
 
-  scene.add(new THREE.AxisHelper(100));
+  //scene.add(new THREE.AxisHelper(100));
 
   var port = getParameterByName('port');
 
