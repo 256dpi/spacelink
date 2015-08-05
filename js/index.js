@@ -20,7 +20,7 @@ $(function(){
 
   new DepthRender(
     ls,
-    16,
+    8,
     scene,
     -Math.PI/2,
     render
@@ -31,7 +31,7 @@ $(function(){
   n.on('found', function(node){
     node.render = new DepthRender(
       new RemoteStream(node),
-      16,
+      8,
       scene,
       Math.PI/2,
       render
