@@ -1,7 +1,7 @@
 /**
  * Create a new Network.
  *
- * Events: 'found', 'lost'.
+ * Events: 'found', 'lost', 'in', 'out'.
  *
  * @param shareAudio
  * @constructor
@@ -34,7 +34,7 @@ Network.prototype.connect = function(){
   this.webrtc.joinRoom('256dpi/spacelink');
 
   this.webrtc.on('createdPeer', function(peer) {
-    var node = new Node(peer);
+    var node = new Node(peer, self);
 
     node.on('ready', function(){
       self.nodes.push(node);
@@ -61,12 +61,14 @@ Network.prototype.broadcast = function(data) {
  * Events 'ready', 'message'.
  *
  * @param peer
+ * @param network
  * @constructor
  */
-function Node(peer){
+function Node(peer, network){
   var self = this;
 
   this.peer = peer;
+  this.network = network;
   this.peer.node = this;
 
   this.peer.getDataChannel('data');
@@ -77,6 +79,7 @@ function Node(peer){
       self.channel = channel;
 
       channel.onmessage = function(event) {
+        self.network.emit('in', event.data.length);
         self.emit('message', JSON.parse(event.data));
       };
 
@@ -97,5 +100,7 @@ Node.prototype = Object.create(SimpleEmitter.prototype);
  * @param data
  */
 Node.prototype.send = function(data) {
-  this.channel.send(JSON.stringify(data));
+  var bytes = JSON.stringify(data);
+  this.network.emit('out', bytes.length);
+  this.channel.send(bytes);
 };

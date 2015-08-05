@@ -1,4 +1,6 @@
 $(function(){
+  var renders = 0, inB = 0, outB = 0;
+
   var scene = new THREE.Scene();
 
   var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -6,7 +8,8 @@ $(function(){
 
   var renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+
+  $('body').prepend(renderer.domElement);
 
   var controls = new THREE.OrbitControls(camera);
   controls.addEventListener('change', render);
@@ -39,6 +42,14 @@ $(function(){
     node.render.stop();
   });
 
+  n.on('in', function(bytes){
+    inB += bytes;
+  });
+
+  n.on('out', function(bytes){
+    outB += bytes;
+  });
+
   n.connect();
 
   new ForwardStream(ls, n, 4);
@@ -52,7 +63,18 @@ $(function(){
 
   function render() {
     renderer.render(scene, camera);
+    renders++;
   }
 
   animate();
+
+  setInterval(function(){
+    $('.renders').html(renders + ' R/s');
+    $('.in').html('← ' + Math.round(inB / 1024 * 100) / 100 + ' KB/s');
+    $('.out').html('→ ' + Math.round(outB / 1024 * 100) / 100 + ' KB/s');
+    $('.nodes').html(n.nodes.length + ' N');
+    renders = 0;
+    inB = 0;
+    outB = 0;
+  }, 1000);
 });
