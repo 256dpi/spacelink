@@ -4,14 +4,13 @@
  * Calculations:
  * http://stackoverflow.com/questions/17832238/kinect-intrinsic-parameters-from-field-of-view/18199938#18199938
  *
- * @param width
- * @param height
+ * @param reduce
  * @param vectors
  * @constructor
  */
-function DepthTransformation(width, height, vectors) {
-  this.width = width;
-  this.height = height;
+function DepthTransformation(reduce, vectors) {
+  this.width = 640 / reduce;
+  this.height = 480 / reduce;
 
   this.size = this.width * this.height;
   this.vectors = vectors;

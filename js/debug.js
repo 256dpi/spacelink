@@ -14,7 +14,7 @@ $(function(){
   scene.add(new THREE.AxisHelper(100));
 
   new DepthRender(
-    'ws://10.128.137.196:9090',
+    new DepthStream('ws://10.128.137.196:9090', true),
     8,
     scene,
     -Math.PI/2,
@@ -22,7 +22,7 @@ $(function(){
   );
 
   new DepthRender(
-    'ws://10.128.137.196:9091',
+    new DepthStream('ws://10.128.137.196:9090', true),
     8,
     scene,
     Math.PI/2,

@@ -1,6 +1,8 @@
 /**
  * Create a new Network.
  *
+ * Events: 'found', 'lost'.
+ *
  * @param shareAudio
  * @constructor
  */
@@ -8,26 +10,11 @@ function Network(shareAudio) {
   this.shareAudio = shareAudio;
 
   this.nodes = [];
-  this.callbacks = {};
+
+  SimpleEmitter.call(this);
 }
 
-/**
- * Register event handler for 'found' and 'lost'.
- *
- * @param event
- * @param callback
- */
-Network.prototype.on = function(event, callback) {
-  this.callbacks[event] = callback;
-};
-
-/**
- * @private
- */
-Network.prototype.emit = function(event, data) {
-  var cb = this.callbacks[event];
-  if(cb) cb(data);
-};
+Network.prototype = Object.create(SimpleEmitter.prototype);
 
 /**
  * Connect to the network.
@@ -77,7 +64,6 @@ function Node(peer){
   this.peer = peer;
   this.peer.node = this;
 
-  this.callbacks = {};
   this.channel = this.peer.getDataChannel('data');
 
   this.channel.onmessage = function(event) {
@@ -90,25 +76,11 @@ function Node(peer){
       self.emit('ready');
     }
   });
+
+  SimpleEmitter.call(this);
 }
 
-/**
- * Register event handler for 'message' and 'ready'.
- *
- * @param event
- * @param callback
- */
-Node.prototype.on = function(event, callback) {
-  this.callbacks[event] = callback;
-};
-
-/**
- * @private
- */
-Node.prototype.emit = function(event, data) {
-  var cb = this.callbacks[event];
-  if(cb) cb(data);
-};
+Node.prototype = Object.create(SimpleEmitter.prototype);
 
 /**
  * Send data to peer.

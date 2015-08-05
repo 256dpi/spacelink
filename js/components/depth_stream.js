@@ -1,12 +1,15 @@
 /**
  * Create new DepthStream client.
  *
+ * Events: 'data'.
+ *
  * @param address
  * @param stream
- * @param callback
  * @constructor
  */
-function DepthStream(address, stream, callback){
+function DepthStream(address, stream){
+  var self = this;
+
   var ws = new WebSocket(address);
   ws.binaryType = 'arraybuffer';
 
@@ -19,11 +22,15 @@ function DepthStream(address, stream, callback){
   };
 
   ws.onmessage = function(message) {
-    callback(new Uint16Array(message.data));
+    self.emit('data', new Uint16Array(message.data));
   };
 
   this.ws = ws;
+
+  SimpleEmitter.call(this);
 }
+
+DepthStream.prototype = Object.create(SimpleEmitter.prototype);
 
 /**
  * Close client.
