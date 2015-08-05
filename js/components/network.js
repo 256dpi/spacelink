@@ -35,8 +35,11 @@ Network.prototype.connect = function(){
 
   this.webrtc.on('createdPeer', function(peer) {
     var node = new Node(peer);
-    self.nodes.push(node);
-    self.emit('found', node);
+
+    node.on('ready', function(){
+      self.nodes.push(node);
+      self.emit('found', node);
+    });
   });
 
   this.webrtc.on('peerStreamRemoved', function(peer){
@@ -66,16 +69,20 @@ function Node(peer){
   this.peer = peer;
   this.peer.node = this;
 
-  this.channel = this.peer.getDataChannel('data');
-
-  this.channel.onmessage = function(event) {
-    self.emit('message', JSON.parse(event.data));
-  };
+  this.peer.getDataChannel('data');
 
   this.peer.on('channelOpen', function(channel){
     if(channel.label == 'data') {
+      var ready = !self.channel;
       self.channel = channel;
-      self.emit('ready');
+
+      channel.onmessage = function(event) {
+        self.emit('message', JSON.parse(event.data));
+      };
+
+      if(ready) {
+        self.emit('ready');
+      }
     }
   });
 

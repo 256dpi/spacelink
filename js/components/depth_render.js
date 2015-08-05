@@ -28,7 +28,8 @@ function DepthRender(stream, reduce, scene, rotation, onUpdate) {
 
   this.transformation = new DepthTransformation(reduce, this.particles.vertices);
 
-  this.stream.on('data', function(array){
+  this.stream.on('data', function(data){
+    var array = new Uint16Array(data);
     self.transformation.update(array);
     self.particles.verticesNeedUpdate = true;
     self.onUpdate();

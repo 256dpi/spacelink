@@ -17,7 +17,7 @@ function LocalStream(address){
   };
 
   ws.onmessage = function(message) {
-    self.emit('data', new Uint16Array(message.data));
+    self.emit('data', message.data);
   };
 
   this.ws = ws;

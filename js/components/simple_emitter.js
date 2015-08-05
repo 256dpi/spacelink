@@ -8,22 +8,31 @@ SimpleEmitter = function(){
 };
 
 /**
- * Register event handler for 'found' and 'lost'.
+ * Register event handler.
  *
  * @param event
  * @param callback
  */
 SimpleEmitter.prototype.on = function(event, callback) {
-  this.callbacks[event] = callback;
+  if(!this.callbacks[event]) {
+    this.callbacks[event] = [];
+  }
+
+  this.callbacks[event].push(callback);
 };
 
 /**
- * Emit an event to the registered callback.
+ * Emit an event to the registered callbacks.
  *
  * @param event
  * @param data
  */
 SimpleEmitter.prototype.emit = function(event, data) {
-  var cb = this.callbacks[event];
-  if(cb) cb(data);
+  if(!this.callbacks[event]) {
+    this.callbacks[event] = [];
+  }
+
+  this.callbacks[event].forEach(function(cb){
+    cb(data);
+  });
 };
