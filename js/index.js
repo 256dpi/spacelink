@@ -18,11 +18,13 @@ $(function(){
 
   var ls = new LocalStream('ws://0.0.0.0:9090');
 
+  var om = new OrientationManager();
+
   new DepthRender(
     ls,
     8,
     scene,
-    -Math.PI/2,
+    om.obtain(ls),
     render
   );
 
@@ -33,13 +35,14 @@ $(function(){
       new RemoteStream(node),
       8,
       scene,
-      Math.PI/2,
+      om.obtain(node),
       render
     );
   });
 
   n.on('lost', function(node){
     node.render.stop();
+    om.free(node);
   });
 
   n.on('in', function(bytes){
