@@ -55,6 +55,8 @@ Network.prototype.broadcast = function(data) {
 /**
  * Wrapper for a connected peer.
  *
+ * Events 'ready', 'message'.
+ *
  * @param peer
  * @constructor
  */
