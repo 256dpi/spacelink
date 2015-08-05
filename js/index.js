@@ -16,7 +16,9 @@ $(function(){
 
   scene.add(new THREE.AxisHelper(100));
 
-  var ls = new LocalStream('ws://0.0.0.0:9090');
+  var port = getParameterByName('port');
+
+  var ls = new LocalStream('ws://0.0.0.0:' + (port ? port : 9090));
 
   var om = new OrientationManager();
 
@@ -81,3 +83,10 @@ $(function(){
     outB = 0;
   }, 1000);
 });
+
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
