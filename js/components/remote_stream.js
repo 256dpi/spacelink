@@ -9,11 +9,16 @@
 function RemoteStream(node){
   var self = this;
 
-  console.log('attach stream');
-
   node.on('message', function(data){
-    LZMA.decompress(data.stream, function(array){
-      self.emit('data', new Uint16Array(array));
+    LZMA.decompress(data.stream, function(data){
+      var data2 = new Uint8Array(data.length);
+      for(var j = 0; j < data.length; j++) {
+        data2[j] = data[j];
+      }
+
+      var array = new Uint16Array(data2.buffer);
+      
+      self.emit('data', array);
     });
   });
 

@@ -41,19 +41,7 @@ $(function(){
 
   n.connect();
 
-  var i = 0;
-
-  ls.on('data', function(data){
-    if(i == 0) {
-      LZMA.compress(new Uint8Array(data), 1, function(bytes){
-        n.broadcast({stream: bytes});
-      });
-    } else if(i == 30) {
-      i = -1;
-    }
-
-    i++;
-  });
+  new ForwardStream(ls, n);
 
   render();
 
