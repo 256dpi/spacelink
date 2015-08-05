@@ -1,12 +1,12 @@
 /**
- * Create new DepthStream client.
+ * Create new LocalStream client.
  *
  * Events: 'data'.
  *
  * @param address
  * @constructor
  */
-function DepthStream(address){
+function LocalStream(address){
   var self = this;
 
   var ws = new WebSocket(address);
@@ -25,11 +25,11 @@ function DepthStream(address){
   SimpleEmitter.call(this);
 }
 
-DepthStream.prototype = Object.create(SimpleEmitter.prototype);
+LocalStream.prototype = Object.create(SimpleEmitter.prototype);
 
 /**
  * Close client.
  */
-DepthStream.prototype.close = function(){
+LocalStream.prototype.close = function(){
   this.ws.close();
 };
