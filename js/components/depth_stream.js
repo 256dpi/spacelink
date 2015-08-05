@@ -4,21 +4,16 @@
  * Events: 'data'.
  *
  * @param address
- * @param stream
  * @constructor
  */
-function DepthStream(address, stream){
+function DepthStream(address){
   var self = this;
 
   var ws = new WebSocket(address);
   ws.binaryType = 'arraybuffer';
 
   ws.onopen = function() {
-    if(stream) {
-      ws.send('*');
-    } else {
-      ws.send('1');
-    }
+    ws.send('*');
   };
 
   ws.onmessage = function(message) {
