@@ -14,18 +14,10 @@ $(function(){
   scene.add(new THREE.AxisHelper(100));
 
   new DepthRender(
-    new LocalStream('ws://10.128.137.196:9090'),
+    new LocalStream('ws://0.0.0.0:9090'),
     8,
     scene,
     -Math.PI/2,
-    render
-  );
-
-  new DepthRender(
-    new LocalStream('ws://10.128.137.196:9090'),
-    8,
-    scene,
-    Math.PI/2,
     render
   );
 

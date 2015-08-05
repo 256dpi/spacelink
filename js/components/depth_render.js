@@ -11,6 +11,7 @@
 function DepthRender(stream, reduce, scene, rotation, onUpdate) {
   var self = this;
   this.stream = stream;
+  this.scene = scene;
   this.onUpdate = onUpdate;
 
   this.particles = new THREE.Geometry();
@@ -23,7 +24,7 @@ function DepthRender(stream, reduce, scene, rotation, onUpdate) {
   this.system = new THREE.PointCloud(this.particles, this.material);
   this.system.rotation.y = rotation;
 
-  scene.add(this.system);
+  this.scene.add(this.system);
 
   this.transformation = new DepthTransformation(reduce, this.particles.vertices);
 
@@ -38,5 +39,5 @@ function DepthRender(stream, reduce, scene, rotation, onUpdate) {
  * Stop renderer.
  */
 DepthRender.prototype.stop = function(){
-  this.stream.close();
+  this.scene.remove(this.system);
 };
