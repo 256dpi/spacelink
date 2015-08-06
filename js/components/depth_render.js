@@ -3,16 +3,14 @@
  *
  * @param stream
  * @param reduce
- * @param scene
+ * @param renderEngine
  * @param rotation
- * @param onUpdate
  * @constructor
  */
-function DepthRender(stream, reduce, scene, rotation, onUpdate) {
+function DepthRender(stream, reduce, renderEngine, rotation) {
   var self = this;
   this.stream = stream;
-  this.scene = scene;
-  this.onUpdate = onUpdate;
+  this.renderEngine = renderEngine;
 
   this.particles = new THREE.Geometry();
 
@@ -24,7 +22,7 @@ function DepthRender(stream, reduce, scene, rotation, onUpdate) {
   this.system = new THREE.PointCloud(this.particles, this.material);
   this.system.rotation.y = rotation;
 
-  this.scene.add(this.system);
+  this.renderEngine.scene.add(this.system);
 
   this.transformation = new DepthTransformation(reduce, this.particles.vertices);
 
@@ -32,7 +30,7 @@ function DepthRender(stream, reduce, scene, rotation, onUpdate) {
     var array = new Uint16Array(data);
     self.transformation.update(array);
     self.particles.verticesNeedUpdate = true;
-    self.onUpdate();
+    self.renderEngine.render();
   });
 }
 
