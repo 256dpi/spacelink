@@ -1,10 +1,4 @@
 $(function(){
-  var stats = {
-    renders: 0,
-    inB: 0,
-    outB: 0
-  };
-
   var config = {
     vr: getParameterByName('vr') == 'yes',
     debug: getParameterByName('debug') == 'yes'
@@ -26,29 +20,38 @@ $(function(){
     om.free(node);
   });
 
-  n.on('in', function(bytes){
-    stats.inB += bytes;
-  });
+  if(!config.vr){
+    var stats = {
+      renders: 0,
+      inB: 0,
+      outB: 0
+    };
 
-  n.on('out', function(bytes){
-    stats.outB += bytes;
-  });
+    n.on('in', function(bytes){
+      stats.inB += bytes;
+    });
+
+    n.on('out', function(bytes){
+      stats.outB += bytes;
+    });
+
+    re.on('render', function(){
+      stats.renders++;
+    });
+
+    setInterval(function(){
+      $('.renders').html(stats.renders + ' R/s');
+      $('.in').html('← ' + Math.round(stats.inB / 1024 * 100) / 100 + ' KB/s');
+      $('.out').html('→ ' + Math.round(stats.outB / 1024 * 100) / 100 + ' KB/s');
+      $('.nodes').html(n.nodes.length + ' N');
+      stats.renders = 0;
+      stats.inB = 0;
+      stats.outB = 0;
+    }, 1000);
+  } else {
+    $('#hud').remove();
+  }
 
   n.connect();
-
-  re.on('render', function(){
-    stats.renders++;
-  });
-
   re.start();
-
-  setInterval(function(){
-    $('.renders').html(stats.renders + ' R/s');
-    $('.in').html('← ' + Math.round(stats.inB / 1024 * 100) / 100 + ' KB/s');
-    $('.out').html('→ ' + Math.round(stats.outB / 1024 * 100) / 100 + ' KB/s');
-    $('.nodes').html(n.nodes.length + ' N');
-    stats.renders = 0;
-    stats.inB = 0;
-    stats.outB = 0;
-  }, 1000);
 });
