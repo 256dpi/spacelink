@@ -11,11 +11,11 @@ function RenderEngine(debug, vr) {
     this.scene.add(new THREE.AxisHelper(100));
   }
 
-  this.addOrbitControls();
-
   if(vr) {
     this.addVRControls();
     this.createVREffect();
+  } else {
+    this.addOrbitControls();
   }
 
   function onWindowResize() {
