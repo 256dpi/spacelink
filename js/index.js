@@ -1,5 +1,9 @@
 $(function(){
-  var renders = 0, inB = 0, outB = 0;
+  var stats = {
+    renders: 0,
+    inB: 0,
+    outB: 0
+  };
 
   var scene = new THREE.Scene();
 
@@ -48,11 +52,11 @@ $(function(){
   });
 
   n.on('in', function(bytes){
-    inB += bytes;
+    stats.inB += bytes;
   });
 
   n.on('out', function(bytes){
-    outB += bytes;
+    stats.outB += bytes;
   });
 
   n.connect();
@@ -68,19 +72,19 @@ $(function(){
 
   function render() {
     renderer.render(scene, camera);
-    renders++;
+    stats.renders++;
   }
 
   animate();
 
   setInterval(function(){
-    $('.renders').html(renders + ' R/s');
-    $('.in').html('← ' + Math.round(inB / 1024 * 100) / 100 + ' KB/s');
-    $('.out').html('→ ' + Math.round(outB / 1024 * 100) / 100 + ' KB/s');
+    $('.renders').html(stats.renders + ' R/s');
+    $('.in').html('← ' + Math.round(stats.inB / 1024 * 100) / 100 + ' KB/s');
+    $('.out').html('→ ' + Math.round(stats.outB / 1024 * 100) / 100 + ' KB/s');
     $('.nodes').html(n.nodes.length + ' N');
-    renders = 0;
-    inB = 0;
-    outB = 0;
+    stats.renders = 0;
+    stats.inB = 0;
+    stats.outB = 0;
   }, 1000);
 });
 
