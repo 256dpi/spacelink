@@ -1,6 +1,8 @@
 function RenderEngine(debug, vr) {
   var self = this;
 
+  this.controls = [];
+
   this.createScene();
   this.createCamera();
   this.createRenderer();
@@ -9,11 +11,11 @@ function RenderEngine(debug, vr) {
     this.scene.add(new THREE.AxisHelper(100));
   }
 
+  this.addOrbitControls();
+
   if(vr) {
-    this.createVRControls();
+    this.addVRControls();
     this.createVREffect();
-  } else {
-    this.createOrbitControls();
   }
 
   function onWindowResize() {
@@ -51,18 +53,31 @@ RenderEngine.prototype.createRenderer = function(){
   return this.renderer;
 };
 
-RenderEngine.prototype.createOrbitControls = function(){
-  this.controls = new THREE.OrbitControls(this.camera);
-  this.controls.addEventListener('change', this.render.bind(this));
+RenderEngine.prototype.addOrbitControls = function(){
+  var controls = new THREE.OrbitControls(this.camera);
+  this.controls.push(controls);
 };
 
-RenderEngine.prototype.createVRControls = function(){
-  this.controls = new THREE.VRControls(this.camera);
+RenderEngine.prototype.addVRControls = function(){
+  var controls = new THREE.VRControls(this.camera);
+  this.controls.push(controls);
+
+  window.addEventListener('keydown', function(event) {
+    if (event.keyCode == 32) { // space
+      event.preventDefault();
+      controls.resetSensor();
+    }
+  }, true);
 };
 
 RenderEngine.prototype.createVREffect = function(){
+  var self = this;
   this.effect = new THREE.VREffect(this.renderer);
   this.effect.setSize(window.innerWidth, window.innerHeight);
+
+  document.body.addEventListener('dblclick', function() {
+    self.effect.setFullScreen(true);
+  });
 };
 
 RenderEngine.prototype.render = function(){
@@ -76,24 +91,14 @@ RenderEngine.prototype.render = function(){
 
 RenderEngine.prototype.update = function(){
   requestAnimationFrame(this.update.bind(this));
-  this.controls.update();
+
+  this.controls.forEach(function(controls){
+    controls.update();
+  });
+
+  this.render();
 };
 
 RenderEngine.prototype.start = function(){
-  this.render();
   this.update();
 };
-
-//document.body.addEventListener('dblclick', function() {
-//  effect.setFullScreen(true);
-//});
-//
-//function onkey(event) {
-//  event.preventDefault();
-//
-//  if (event.keyCode == 90) { // z
-//    controls.zeroSensor();
-//  }
-//}
-//
-//window.addEventListener('keydown', onkey, true);

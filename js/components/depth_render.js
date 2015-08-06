@@ -30,7 +30,6 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
     var array = new Uint16Array(data);
     self.transformation.update(array);
     self.particles.verticesNeedUpdate = true;
-    self.renderEngine.render();
   });
 }
 
@@ -38,5 +37,5 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
  * Stop renderer.
  */
 DepthRender.prototype.stop = function(){
-  this.scene.remove(this.system);
+  this.renderEngine.scene.remove(this.system);
 };
