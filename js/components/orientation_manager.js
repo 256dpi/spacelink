@@ -8,10 +8,10 @@ function OrientationManager(){
   this.map = {};
 
   [
-    Math.PI * 2,
-    Math.PI,
-    Math.PI / 2,
-    Math.PI / 2 * 3
+    deg2rad(0),
+    deg2rad(180),
+    deg2rad(90),
+    deg2rad(270)
   ].forEach(function(pos){
      self.map[pos] = null;
   });

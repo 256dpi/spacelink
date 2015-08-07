@@ -6,6 +6,7 @@ function RenderEngine(debug, vr) {
   this.createScene();
   this.createCamera();
   this.createRenderer();
+  this.addFloor();
 
   if(debug) {
     this.scene.add(new THREE.AxisHelper(100));
@@ -52,6 +53,15 @@ RenderEngine.prototype.createRenderer = function(){
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   $('body').prepend(this.renderer.domElement);
   return this.renderer;
+};
+
+RenderEngine.prototype.addFloor = function(){
+  var geometry = new THREE.CircleGeometry(1500, 100);
+  var material = new THREE.MeshBasicMaterial({ color: 0x222222 });
+  this.floor = new THREE.Mesh(geometry, material);
+  this.floor.material.side = THREE.DoubleSide;
+  this.floor.rotation.x = deg2rad(90);
+  this.scene.add(this.floor);
 };
 
 RenderEngine.prototype.addOrbitControls = function(){

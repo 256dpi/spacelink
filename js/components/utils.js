@@ -17,3 +17,7 @@ function str2ab(str) {
   }
   return buf;
 }
+
+function deg2rad(deg) {
+  return deg * Math.PI / 180;
+}
