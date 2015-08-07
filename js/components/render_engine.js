@@ -31,6 +31,15 @@ function RenderEngine(debug, vr) {
 
   window.addEventListener('resize', onWindowResize, false);
 
+  this.enabled = true;
+
+  window.addEventListener('keydown', function(event) {
+    if (event.keyCode == 13) { // enter
+      event.preventDefault();
+      self.enabled = !self.enabled;
+    }
+  }, true);
+
   SimpleEmitter.call(this);
 }
 
@@ -92,12 +101,14 @@ RenderEngine.prototype.createVREffect = function(){
 };
 
 RenderEngine.prototype.render = function(){
-  if(this.effect) {
-    this.effect.render(this.scene, this.camera);
-  } else {
-    this.renderer.render(this.scene, this.camera);
+  if(this.enabled) {
+    if(this.effect) {
+      this.effect.render(this.scene, this.camera);
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
+    this.emit('render');
   }
-  this.emit('render');
 };
 
 RenderEngine.prototype.update = function(){
