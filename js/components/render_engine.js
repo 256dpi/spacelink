@@ -42,7 +42,8 @@ RenderEngine.prototype.createScene = function(){
 
 RenderEngine.prototype.createCamera = function(){
   this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-  this.camera.position.set(10, 10, 10);
+  this.camera.position.set(20, 0, 0);
+  //this.camera.lookAt(new THREE.Vector3(0, 0, 0));
   return this.camera;
 };
 
