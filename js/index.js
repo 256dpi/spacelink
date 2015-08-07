@@ -20,7 +20,7 @@ $(function(){
     om.free(node);
   });
 
-  if(!config.vr){
+  if(config.debug){
     var stats = {
       renders: 0,
       inB: 0,
