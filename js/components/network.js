@@ -49,6 +49,11 @@ Network.prototype.connect = function(){
   });
 };
 
+/**
+ * Send data to all nodes in a network.
+ *
+ * @param data
+ */
 Network.prototype.broadcast = function(data) {
   this.nodes.forEach(function(node){
     node.send(data);

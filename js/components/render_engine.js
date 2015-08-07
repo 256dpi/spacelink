@@ -1,3 +1,10 @@
+/**
+ * Create new RenderEngine.
+ *
+ * @param debug
+ * @param vr
+ * @constructor
+ */
 function RenderEngine(debug, vr) {
   var self = this;
 
@@ -45,22 +52,28 @@ function RenderEngine(debug, vr) {
 
 RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
+/**
+ * Create Scene.
+ */
 RenderEngine.prototype.createScene = function(){
   this.scene = new THREE.Scene();
-  return this.scene;
 };
 
+/**
+ * Create Camera.
+ */
 RenderEngine.prototype.createCamera = function(){
   this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
   this.camera.position.set(0, 120, 0);
-  return this.camera;
 };
 
+/**
+ * Create Renderer.
+ */
 RenderEngine.prototype.createRenderer = function(){
   this.renderer = new THREE.WebGLRenderer({ antialias: true });
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   $('body').prepend(this.renderer.domElement);
-  return this.renderer;
 };
 
 RenderEngine.prototype.addFloor = function(){
@@ -72,6 +85,9 @@ RenderEngine.prototype.addFloor = function(){
   this.scene.add(this.floor);
 };
 
+/**
+ * Add Orbit Controls.
+ */
 RenderEngine.prototype.addOrbitControls = function(){
   var controls = new THREE.OrbitControls(this.camera);
   controls.target.set(0, 0, 0);
@@ -82,6 +98,9 @@ RenderEngine.prototype.addOrbitControls = function(){
   this.controls.push(controls);
 };
 
+/**
+ * Add VR Controls.
+ */
 RenderEngine.prototype.addVRControls = function(){
   var controls = new THREE.VRControls(this.camera);
   this.controls.push(controls);
@@ -94,6 +113,9 @@ RenderEngine.prototype.addVRControls = function(){
   }, true);
 };
 
+/**
+ * Create VR Effect.
+ */
 RenderEngine.prototype.createVREffect = function(){
   var self = this;
   this.effect = new THREE.VREffect(this.renderer);
@@ -104,6 +126,9 @@ RenderEngine.prototype.createVREffect = function(){
   });
 };
 
+/**
+ * Render scene.
+ */
 RenderEngine.prototype.render = function(){
   if(this.enabled) {
     if(this.effect) {
@@ -115,6 +140,9 @@ RenderEngine.prototype.render = function(){
   }
 };
 
+/**
+ * On update cycle.
+ */
 RenderEngine.prototype.update = function(){
   requestAnimationFrame(this.update.bind(this));
 
@@ -125,6 +153,9 @@ RenderEngine.prototype.update = function(){
   this.render();
 };
 
+/**
+ * Start render loop.
+ */
 RenderEngine.prototype.start = function(){
   this.update();
 };
