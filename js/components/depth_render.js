@@ -12,7 +12,9 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
   this.stream = stream;
   this.renderEngine = renderEngine;
 
-  this.particles = new THREE.Geometry();
+  this.particles = new THREE.BufferGeometry();
+  this.positions = new Float32Array(640 / reduce * 480 / reduce * 3);
+  this.particles.addAttribute('position', new THREE.BufferAttribute(this.positions, 3));
 
   this.material = new THREE.PointCloudMaterial({
     color: 0xFFFFFF,
@@ -24,7 +26,7 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
 
   this.renderEngine.scene.add(this.system);
 
-  this.transformation = new DepthTransformation(reduce, this.particles.vertices);
+  this.transformation = new DepthTransformation(reduce, this.particles);
 
   this.stream.on('data', function(data){
     var array = new Uint16Array(data);

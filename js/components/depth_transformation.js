@@ -5,24 +5,31 @@
  * http://stackoverflow.com/questions/17832238/kinect-intrinsic-parameters-from-field-of-view/18199938#18199938
  *
  * @param reduce
- * @param vectors
+ * @param geometry
  * @constructor
  */
-function DepthTransformation(reduce, vectors) {
+function DepthTransformation(reduce, geometry) {
   this.width = 640 / reduce;
   this.height = 480 / reduce;
 
   this.size = this.width * this.height;
-  this.vectors = vectors;
+  this.geometry = geometry;
+  this.attr = this.geometry.attributes.position;
 
   // focal length: 43°
   this.f = this.height / (2 * Math.tan(43 / 2));
 
+  var n;
   for(var y=0; y < this.height; y++) {
     for(var x=0; x < this.width; x++) {
-      this.vectors.push(new THREE.Vector3(0, 0, 0));
+      n = (y * this.width + x) * 3;
+      this.attr.array[n] = 0;
+      this.attr.array[n + 1] = 0;
+      this.attr.array[n + 2] = 0;
     }
   }
+
+  this.attr.needsUpdate = true;
 }
 
 /**
@@ -31,15 +38,20 @@ function DepthTransformation(reduce, vectors) {
  * @param array
  */
 DepthTransformation.prototype.update = function(array){
+  var index, zw, xw, yw;
   for(var y=0; y < this.height; y++) {
     for(var x=0; x < this.width; x++) {
-      var index = y * this.width + x;
+      index = y * this.width + x;
 
-      var zw = array[index];
-      var xw = zw * (x - this.width / 2) / this.f;
-      var yw = zw * (y - this.height / 2) / this.f;
+      zw = array[index];
+      xw = zw * (x - this.width / 2) / this.f;
+      yw = zw * (y - this.height / 2) / this.f;
 
-      this.vectors[index].set(xw / 10, yw / 10, zw / 10);
+      this.attr.array[index * 3] = xw / 10;
+      this.attr.array[index * 3 + 1] = yw / 10;
+      this.attr.array[index * 3 + 2] = zw / 10;
     }
   }
+
+  this.attr.needsUpdate = true;
 };
