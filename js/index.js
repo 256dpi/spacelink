@@ -43,7 +43,7 @@ $(function(){
       $('.renders').html(stats.renders + ' R/s');
       $('.in').html('← ' + Math.round(stats.inB / 1024 * 100) / 100 + ' KB/s');
       $('.out').html('→ ' + Math.round(stats.outB / 1024 * 100) / 100 + ' KB/s');
-      $('.nodes').html(n.nodes.length + ' N');
+      $('.nodes').html(n.nodes.length + ' P');
       stats.renders = 0;
       stats.inB = 0;
       stats.outB = 0;
