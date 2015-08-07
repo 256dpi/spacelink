@@ -18,7 +18,7 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
 
   this.material = new THREE.PointCloudMaterial({
     color: 0xFFFFFF,
-    size: reduce / 2
+    size: reduce / 4
   });
 
   this.system = new THREE.PointCloud(this.particles, this.material);
