@@ -51,9 +51,8 @@ RenderEngine.prototype.createScene = function(){
 };
 
 RenderEngine.prototype.createCamera = function(){
-  this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-  this.camera.position.set(20, 0, 0);
-  //this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+  this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
+  this.camera.position.set(0, 120, 0);
   return this.camera;
 };
 
@@ -75,6 +74,11 @@ RenderEngine.prototype.addFloor = function(){
 
 RenderEngine.prototype.addOrbitControls = function(){
   var controls = new THREE.OrbitControls(this.camera);
+  controls.target.set(0, 0, 0);
+  controls.rotateUp(deg2rad(-70));
+  controls.rotateLeft(deg2rad(90));
+  controls.dollyOut(5);
+  controls.panUp(150);
   this.controls.push(controls);
 };
 
