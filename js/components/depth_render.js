@@ -12,16 +12,13 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
   this.stream = stream;
   this.renderEngine = renderEngine;
 
-  this.particles = new THREE.BufferGeometry();
-  this.positions = new Float32Array(640 / reduce * 480 / reduce * 3);
-  this.particles.addAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+  this.particles = new THREE.PlaneBufferGeometry(640, 480, 640 / reduce - 1, 480 / reduce - 1);
 
-  this.material = new THREE.PointCloudMaterial({
-    color: 0xFFFFFF,
-    size: reduce / 4
-  });
+  this.system = new THREE.Mesh(this.particles, new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    wireframe: true
+  }));
 
-  this.system = new THREE.PointCloud(this.particles, this.material);
   this.system.rotation.y = rotation;
   this.system.frustumCulled = false;
 
