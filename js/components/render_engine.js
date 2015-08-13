@@ -14,6 +14,7 @@ function RenderEngine(debug, vr) {
   this.createCamera();
   this.createRenderer();
   this.addFloor();
+  this.addFog();
 
   if(debug) {
     this.scene.add(new THREE.AxisHelper(100));
@@ -76,6 +77,9 @@ RenderEngine.prototype.createRenderer = function(){
   $('body').prepend(this.renderer.domElement);
 };
 
+/**
+ * Add floor to scene.
+ */
 RenderEngine.prototype.addFloor = function(){
   var geometry = new THREE.CircleGeometry(1500, 100);
   var material = new THREE.MeshBasicMaterial({ color: 0x222222 });
@@ -83,6 +87,13 @@ RenderEngine.prototype.addFloor = function(){
   this.floor.material.side = THREE.DoubleSide;
   this.floor.rotation.x = deg2rad(90);
   this.scene.add(this.floor);
+};
+
+/**
+ * Add fog to scene.
+ */
+RenderEngine.prototype.addFog = function(){
+  this.scene.fog = new THREE.Fog(0x000000, 0, 3000);
 };
 
 /**
