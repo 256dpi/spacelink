@@ -23,6 +23,7 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
 
   this.system = new THREE.PointCloud(this.particles, this.material);
   this.system.rotation.y = rotation;
+  this.system.position.y += 120; //TODO: is this a fix value?
   this.system.frustumCulled = false;
 
   this.renderEngine.scene.add(this.system);
