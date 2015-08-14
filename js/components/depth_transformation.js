@@ -47,6 +47,7 @@ DepthTransformation.prototype.update = function(array){
       xw = zw * (x - this.width / 2) / this.f;
       yw = zw * (y - this.height / 2) / this.f;
 
+      // convert units to cm
       this.attr.array[index * 3] = xw / 10;
       this.attr.array[index * 3 + 1] = yw / 10;
       this.attr.array[index * 3 + 2] = zw / 10;

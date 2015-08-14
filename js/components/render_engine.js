@@ -14,7 +14,10 @@ function RenderEngine(debug, vr) {
   this.createCamera();
   this.createRenderer();
   this.addFloor();
-  this.addFog();
+
+  if(vr) {
+    this.addFog();
+  }
 
   if(debug) {
     this.scene.add(new THREE.AxisHelper(100));
@@ -53,6 +56,8 @@ function RenderEngine(debug, vr) {
 
 RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
+RenderEngine.SENSOR_HEIGHT = 160;
+
 /**
  * Create Scene.
  */
@@ -65,7 +70,7 @@ RenderEngine.prototype.createScene = function(){
  */
 RenderEngine.prototype.createCamera = function(){
   this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
-  this.camera.position.set(0, 120, 0);
+  this.camera.position.set(0, RenderEngine.SENSOR_HEIGHT, 0);
 };
 
 /**
@@ -86,6 +91,7 @@ RenderEngine.prototype.addFloor = function(){
   this.floor = new THREE.Mesh(geometry, material);
   this.floor.material.side = THREE.DoubleSide;
   this.floor.rotation.x = deg2rad(90);
+  this.floor.position.y = -RenderEngine.SENSOR_HEIGHT;
   this.scene.add(this.floor);
 };
 
@@ -93,7 +99,7 @@ RenderEngine.prototype.addFloor = function(){
  * Add fog to scene.
  */
 RenderEngine.prototype.addFog = function(){
-  this.scene.fog = new THREE.Fog(0x000000, 0, 3000);
+  this.scene.fog = new THREE.Fog(0x222222, 0, 300);
 };
 
 /**
@@ -114,6 +120,7 @@ RenderEngine.prototype.addOrbitControls = function(){
  */
 RenderEngine.prototype.addVRControls = function(){
   var controls = new THREE.VRControls(this.camera);
+  controls.scale = 100; // from meters to centimeters
   this.controls.push(controls);
 
   window.addEventListener('keydown', function(event) {
