@@ -52,6 +52,8 @@ $(function(){
     $('#hud').remove();
   }
 
+  hideInactiveCursor();
+
   n.connect();
   re.start();
 });
