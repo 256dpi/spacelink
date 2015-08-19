@@ -2,6 +2,8 @@
 
 **a virtual room that bridges long distances**
 
+![Spacelink](http://joel-github-static.s3.amazonaws.com/spacelink/spacelink.png)
+
 ## Technologies
 
 - <http://threejs.org>
