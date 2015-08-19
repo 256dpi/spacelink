@@ -57,6 +57,7 @@ function RenderEngine(debug, vr) {
 RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
 RenderEngine.SENSOR_HEIGHT = 160;
+RenderEngine.SENSOR_DISTANCE = 300;
 
 /**
  * Create Scene.
@@ -99,7 +100,7 @@ RenderEngine.prototype.addFloor = function(){
  * Add fog to scene.
  */
 RenderEngine.prototype.addFog = function(){
-  this.scene.fog = new THREE.Fog(0x222222, 0, 300);
+  this.scene.fog = new THREE.Fog(0x222222, 0, RenderEngine.SENSOR_DISTANCE);
 };
 
 /**
