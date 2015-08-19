@@ -20,7 +20,13 @@ function RenderEngine(debug, vr) {
   }
 
   if(debug) {
-    this.scene.add(new THREE.AxisHelper(100));
+    this.logicalCenter = new THREE.AxisHelper(100);
+    this.scene.add(this.logicalCenter);
+
+    this.virtualCenter = new THREE.AxisHelper(50);
+    this.virtualCenter.position.z = - RenderEngine.SENSOR_DISTANCE;
+    this.virtualCenter.position.y = - RenderEngine.SENSOR_HEIGHT;
+    this.scene.add(this.virtualCenter);
   }
 
   if(vr) {
