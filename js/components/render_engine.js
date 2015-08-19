@@ -70,7 +70,7 @@ RenderEngine.prototype.createScene = function(){
  */
 RenderEngine.prototype.createCamera = function(){
   this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
-  this.camera.position.set(0, RenderEngine.SENSOR_HEIGHT, 0);
+  this.camera.position.set(0, 0, 0);
 };
 
 /**
@@ -107,7 +107,7 @@ RenderEngine.prototype.addFog = function(){
  */
 RenderEngine.prototype.addOrbitControls = function(){
   var controls = new THREE.OrbitControls(this.camera);
-  controls.target.set(0, 0, 0);
+  controls.target.set(0, -RenderEngine.SENSOR_HEIGHT, 0);
   controls.rotateUp(deg2rad(-70));
   controls.rotateLeft(deg2rad(90));
   controls.dollyOut(5);
