@@ -15,7 +15,7 @@ function RenderEngine(debug, vr) {
   this.createRenderer();
   this.addFloor();
 
-  if(vr) {
+  if(vr && !debug) {
     this.addFog();
   }
 
