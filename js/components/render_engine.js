@@ -106,7 +106,7 @@ RenderEngine.prototype.addFloor = function(){
  * Add fog to scene.
  */
 RenderEngine.prototype.addFog = function(){
-  this.scene.fog = new THREE.Fog(0x222222, 0, RenderEngine.SENSOR_DISTANCE);
+  this.scene.fog = new THREE.Fog(0x222222, 0, 1000);
 };
 
 /**
