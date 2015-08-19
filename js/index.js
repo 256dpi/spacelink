@@ -1,15 +1,19 @@
 $(function(){
   var config = {
     vr: getParameterByName('vr') == 'yes',
-    debug: getParameterByName('debug') == 'yes'
+    debug: getParameterByName('debug') == 'yes',
+    local: getParameterByName('local') != 'no'
   };
 
   var re = new RenderEngine(config.debug, config.vr);
-  var ls = new LocalStream('ws://0.0.0.0:9090');
   var om = new OrientationManager();
-  new DepthRender(ls, 8, re, om.obtain(ls));
   var n = new Network(false);
-  new ForwardStream(ls, n, 4);
+
+  if(config.local) {
+    var ls = new LocalStream('ws://0.0.0.0:9090');
+    new DepthRender(ls, 8, re, om.obtain(ls));
+    new ForwardStream(ls, n, 4);
+  }
 
   n.on('found', function(node){
     node.render = new DepthRender(new RemoteStream(node), 8, re, om.obtain(node));
