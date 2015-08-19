@@ -4,8 +4,9 @@
 
 ## Technologies
 
+- <http://threejs.org>
 - <http://simplewebrtc.com>
 - <http://github.com/256dpi/depthstream>
 - <http://mozvr.com>
-- <http://threejs.org>
+- <https://github.com/borismus/webvr-boilerplate>
 - <https://github.com/pieroxy/lz-string>
