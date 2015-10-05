@@ -12,28 +12,34 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
   this.stream = stream;
   this.renderEngine = renderEngine;
 
-  this.particles = new THREE.BufferGeometry();
-  this.positions = new Float32Array(640 / reduce * 480 / reduce * 3);
-  this.particles.addAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+  this.width = 640 / reduce;
+  this.height = 480 / reduce;
+  this.total = this.width * this.height;
 
-  this.material = new THREE.PointCloudMaterial({
-    color: 0xFFFFFF,
-    size: reduce / 4
+  this.particles = new THREE.BufferGeometry();
+  this.positions = new Float32Array(this.total * 3);
+  this.colors = new Float32Array(this.total * 3);
+  this.particles.addAttribute('position', new THREE.BufferAttribute(this.positions, 3));
+  this.particles.addAttribute('color', new THREE.BufferAttribute(this.colors, 3));
+
+  this.material = new THREE.PointsMaterial({
+    size: reduce / 4,
+    vertexColors: THREE.VertexColors
   });
 
-  this.system = new THREE.PointCloud(this.particles, this.material);
+  this.system = new THREE.Points(this.particles, this.material);
   this.system.rotation.y = rotation;
   this.system.position.z = -RenderEngine.SENSOR_DISTANCE;
   this.system.frustumCulled = false;
 
   this.renderEngine.scene.add(this.system);
 
-  this.transformation = new DepthTransformation(reduce, this.particles);
+  this.transformation = new DepthTransformation(this.width, this.height, this.particles);
 
   this.stream.on('data', function(data){
-    var array = new Uint16Array(data);
-    self.transformation.update(array);
-    self.particles.verticesNeedUpdate = true;
+    var depth = new Uint16Array(data, 0, self.total);
+    var color = new Uint8Array(data, self.total * 2, self.total * 3);
+    self.transformation.update(depth, color);
   });
 }
 
