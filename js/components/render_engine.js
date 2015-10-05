@@ -1,67 +1,19 @@
 /**
  * Create new RenderEngine.
  *
- * @param debug
- * @param vr
+ * @param configManager
  * @constructor
  */
-function RenderEngine(debug, vr) {
-  var self = this;
-
-  this.controls = [];
+function RenderEngine(configManager) {
+  this.configManager = configManager;
 
   this.createScene();
-  this.createCamera();
+  this.createCameras();
   this.createRenderer();
-  this.addFloor();
-
-  if(vr && !debug) {
-    this.addFog();
-  }
-
-  if(debug) {
-    this.logicalCenter = new THREE.AxisHelper(100);
-    this.scene.add(this.logicalCenter);
-
-    this.virtualCenter = new THREE.AxisHelper(50);
-    this.virtualCenter.position.z = - RenderEngine.SENSOR_DISTANCE;
-    this.virtualCenter.position.y = - RenderEngine.SENSOR_HEIGHT;
-    this.scene.add(this.virtualCenter);
-  }
-
-  if(vr) {
-    this.addVRControls(this.camera);
-    this.createVREffect();
-  } else {
-    this.addOrbitControls();
-
-    if(debug) {
-      this.vrCenter = new THREE.AxisHelper(50);
-      this.addVRControls(this.vrCenter);
-      this.scene.add(this.vrCenter);
-    }
-  }
-
-  function onWindowResize() {
-    self.renderer.setSize(window.innerWidth, window.innerHeight);
-    self.camera.aspect = window.innerWidth / window.innerHeight;
-    self.camera.updateProjectionMatrix();
-
-    if(self.effect) {
-      self.effect.setSize(window.innerWidth, window.innerHeight);
-    }
-  }
-
-  window.addEventListener('resize', onWindowResize, false);
-
-  this.enabled = true;
-
-  window.addEventListener('keydown', function(event) {
-    if (event.keyCode == 13) { // enter
-      event.preventDefault();
-      self.enabled = !self.enabled;
-    }
-  }, true);
+  this.createHelpers();
+  this.createControls();
+  this.createVRControls();
+  this.createVREffect();
 
   SimpleEmitter.call(this);
 }
@@ -70,38 +22,18 @@ RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
 RenderEngine.SENSOR_HEIGHT = 160;
 RenderEngine.SENSOR_DISTANCE = 300;
+RenderEngine.BODY_DISPLACEMENT = 0;
 
 /**
  * Create Scene.
  */
 RenderEngine.prototype.createScene = function(){
   this.scene = new THREE.Scene();
-};
 
-/**
- * Create Camera.
- */
-RenderEngine.prototype.createCamera = function(){
-  this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
-  this.camera.position.set(0, 0, 0);
-};
-
-/**
- * Create Renderer.
- */
-RenderEngine.prototype.createRenderer = function(){
-  this.renderer = new THREE.WebGLRenderer({ antialias: true });
-  this.renderer.setSize(window.innerWidth, window.innerHeight);
-  $('body').prepend(this.renderer.domElement);
-};
-
-/**
- * Add floor to scene.
- */
-RenderEngine.prototype.addFloor = function(){
-  var geometry = new THREE.CircleGeometry(1500, 100);
-  var material = new THREE.MeshBasicMaterial({ color: 0x222222 });
-  this.floor = new THREE.Mesh(geometry, material);
+  this.floor = new THREE.Mesh(
+    new THREE.CircleGeometry(1500, 100),
+    new THREE.MeshBasicMaterial({ color: 0x222222 })
+  );
   this.floor.material.side = THREE.DoubleSide;
   this.floor.rotation.x = deg2rad(90);
   this.floor.position.y = -RenderEngine.SENSOR_HEIGHT;
@@ -109,39 +41,90 @@ RenderEngine.prototype.addFloor = function(){
 };
 
 /**
- * Add fog to scene.
+ * Create Cameras.
  */
-RenderEngine.prototype.addFog = function(){
-  this.scene.fog = new THREE.Fog(0x222222, 0, 1000);
+RenderEngine.prototype.createCameras = function(){
+  var self = this;
+
+  this.debugCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
+  this.vrCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 10000);
+  this.debugCamera.position.set(0, 0, 0);
+  this.vrCamera.position.set(0, 0, 0);
+
+  this.configManager.on('resize', function(){
+    self.debugCamera.aspect = window.innerWidth / window.innerHeight;
+    self.debugCamera.updateProjectionMatrix();
+    self.vrCamera.aspect = window.innerWidth / window.innerHeight;
+    self.vrCamera.updateProjectionMatrix();
+  })
 };
 
 /**
- * Add Orbit Controls.
+ * Create Renderer.
  */
-RenderEngine.prototype.addOrbitControls = function(){
-  var controls = new THREE.OrbitControls(this.camera);
-  controls.target.set(0, -RenderEngine.SENSOR_HEIGHT, 0);
-  controls.rotateUp(deg2rad(-70));
-  controls.rotateLeft(deg2rad(90));
-  controls.dollyOut(5);
-  controls.panUp(150);
-  this.controls.push(controls);
+RenderEngine.prototype.createRenderer = function(){
+  var self = this;
+
+  this.renderer = new THREE.WebGLRenderer({ antialias: true });
+  this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+  this.configManager.on('resize', function(){
+    self.renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  $('body').prepend(this.renderer.domElement);
 };
 
 /**
- * Add VR Controls.
+ * Create center helpers.
  */
-RenderEngine.prototype.addVRControls = function(object){
-  var controls = new THREE.VRControls(object);
-  controls.scale = 100; // from meters to centimeters
-  this.controls.push(controls);
+RenderEngine.prototype.createHelpers = function(){
+  var self = this;
 
-  window.addEventListener('keydown', function(event) {
-    if (event.keyCode == 32) { // space
-      event.preventDefault();
-      controls.resetSensor();
-    }
-  }, true);
+  // the logical center is the actual middle
+  this.logicalCenter = new THREE.AxisHelper(100);
+  this.scene.add(this.logicalCenter);
+
+  // the virtual center is where the user stands in his room
+  this.virtualCenter = new THREE.AxisHelper(50);
+  this.virtualCenter.position.z = - RenderEngine.SENSOR_DISTANCE;
+  this.virtualCenter.position.y = - RenderEngine.SENSOR_HEIGHT;
+  this.scene.add(this.virtualCenter);
+
+  // also show the current oculus position and rotation
+  this.vrCenter = new THREE.AxisHelper(50);
+  this.scene.add(this.vrCenter);
+
+  this.configManager.on('debug', function(yes){
+    self.logicalCenter.visible = yes;
+    self.virtualCenter.visible = yes;
+    self.vrCenter.visible = yes;
+  });
+};
+
+/**
+ * Add basic controls.
+ */
+RenderEngine.prototype.createControls = function(){
+  this.orbitControls = new THREE.OrbitControls(this.debugCamera);
+  this.orbitControls.target.set(0, -RenderEngine.SENSOR_HEIGHT, 0);
+  this.orbitControls.rotateUp(deg2rad(-70));
+  this.orbitControls.rotateLeft(deg2rad(90));
+  this.orbitControls.dollyOut(5);
+  this.orbitControls.panUp(150);
+};
+
+/**
+ * Add VRControls.
+ */
+RenderEngine.prototype.createVRControls = function(){
+  var self = this;
+  this.vrControls = new THREE.VRControls(this.vrCamera);
+  this.vrControls.scale = 100; // from meters to centimeters
+
+  this.configManager.on('reset', function(){
+    self.vrControls.resetSensor();
+  });
 };
 
 /**
@@ -149,10 +132,15 @@ RenderEngine.prototype.addVRControls = function(object){
  */
 RenderEngine.prototype.createVREffect = function(){
   var self = this;
+
   this.effect = new THREE.VREffect(this.renderer);
   this.effect.setSize(window.innerWidth, window.innerHeight);
 
-  document.body.addEventListener('dblclick', function() {
+  this.configManager.on('resize', function(){
+    self.effect.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  this.configManager.on('dblclick', function(){
     self.effect.setFullScreen(true);
   });
 };
@@ -161,12 +149,19 @@ RenderEngine.prototype.createVREffect = function(){
  * Render scene.
  */
 RenderEngine.prototype.render = function(){
-  if(this.enabled) {
-    if(this.effect) {
-      this.effect.render(this.scene, this.camera);
+  if(this.configManager.get('enabled')) {
+    if(this.configManager.get('vr')) {
+      this.effect.render(this.scene, this.vrCamera);
     } else {
-      this.renderer.render(this.scene, this.camera);
+      // begin undoing some settings by VREffect
+      var size = this.renderer.getSize();
+      this.renderer.setViewport(0, 0, size.width, size.height );
+      this.renderer.setScissor(0, 0, size.width, size.height );
+      this.renderer.enableScissorTest(false);
+      // end undo
+      this.renderer.render(this.scene, this.debugCamera);
     }
+
     this.emit('render');
   }
 };
@@ -177,9 +172,11 @@ RenderEngine.prototype.render = function(){
 RenderEngine.prototype.update = function(){
   requestAnimationFrame(this.update.bind(this));
 
-  this.controls.forEach(function(controls){
-    controls.update();
-  });
+  this.vrControls.update();
+  this.vrCenter.position.copy(this.vrCamera.position);
+  this.vrCenter.quaternion.copy(this.vrCamera.quaternion);
+
+  this.orbitControls.update();
 
   this.render();
 };
