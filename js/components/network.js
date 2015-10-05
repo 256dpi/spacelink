@@ -3,13 +3,12 @@
  *
  * Events: 'found', 'lost', 'in', 'out'.
  *
- * @param shareAudio
  * @constructor
  */
-function Network(shareAudio) {
-  this.shareAudio = shareAudio;
-
+function Network(configManager) {
+  this.configManager = configManager;
   this.nodes = [];
+  this.speaking = false;
 
   SimpleEmitter.call(this);
 }
@@ -23,15 +22,26 @@ Network.prototype.connect = function(){
   var self = this;
 
   this.webrtc = new SimpleWebRTC({
-    //debug: true,
     media: {
       video: false,
-      audio: this.shareAudio
+      audio: true
     },
-    autoRequestMedia: this.shareAudio
+    autoRequestMedia: true
+  });
+
+  this.configManager.on('mute', function(yes){
+    yes ? self.webrtc.mute() : self.webrtc.unmute();
   });
 
   this.webrtc.joinRoom('256dpi/spacelink');
+
+  this.webrtc.on('speaking', function(){
+    self.speaking = true;
+  });
+
+  this.webrtc.on('stoppedSpeaking', function(){
+    self.speaking = false;
+  });
 
   this.webrtc.on('createdPeer', function(peer) {
     var node = new Node(peer, self);

@@ -2,7 +2,7 @@ $(function(){
   var cm = new ConfigManager();
   var re = new RenderEngine(cm);
   var om = new OrientationManager();
-  var n = new Network(false);
+  var n = new Network(cm);
 
   var ls = new LocalStream('ws://0.0.0.0:9090');
   new DepthRender(ls, 8, re, om.obtain(ls));
@@ -40,6 +40,7 @@ $(function(){
     $('.in').html('← ' + Math.round(stats.inB / 1024 * 100) / 100 + ' KB/s');
     $('.out').html('→ ' + Math.round(stats.outB / 1024 * 100) / 100 + ' KB/s');
     $('.nodes').html(n.nodes.length + ' P');
+    $('.flags').html((cm.get('enabled') ? 'E' : '') + (cm.get('mute') ? 'M' : '') + (n.speaking ? 'S' : ''));
     stats.renders = 0;
     stats.inB = 0;
     stats.outB = 0;

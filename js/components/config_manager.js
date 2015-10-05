@@ -35,6 +35,7 @@ ConfigManager.MAPPING = [
   { code: 13, name: 'enabled', state: true }, // enter
   { code: 68, name: 'debug', state: false }, // d
   { code: 86, name: 'vr', state: false }, // v
+  { code: 77, name: 'mute', state: true }, // m
   { code: 32, name: 'reset' } // space
 ];
 
