@@ -2,7 +2,7 @@ var ls = new LocalStream('ws://0.0.0.0:9090');
 
 var once = false;
 
-console.log('start compression test...');
+document.write('start compression test...<br>');
 
 ls.on('data', function(buf){
   if(once) return;
@@ -24,10 +24,10 @@ ls.on('data', function(buf){
 
   var end = +new Date();
 
-  console.log('data:', Math.round(data.length / 1024) + 'kb,', data_16.length + ' points');
-  console.log('compressed:', Math.round(bytes.length / 1024) + 'kb', 'json:', Math.round(json.length / 1024) + 'kb');
-  console.log('check:', check(data_16, data2_16) ? 'ok' : 'invalid');
-  console.log('time:', end - start + 'ms');
+  document.write('data: ' + Math.round(data.length / 1024) + 'kb, ' + data_16.length + ' points<br>');
+  document.write('compressed: ' + Math.round(bytes.length / 1024) + 'kb json: ' + Math.round(json.length / 1024) + 'kb<br>');
+  document.write('check: ' + check(data_16, data2_16) ? 'ok<br>' : 'invalid<br>');
+  document.write('time: ' +  end - start + 'ms<br>');
 
   ls.close();
 });
