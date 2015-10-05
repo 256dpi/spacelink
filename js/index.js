@@ -1,15 +1,18 @@
 $(function(){
+  var REDUCE = 8;
+  var SKIP = 4;
+
   var cm = new ConfigManager();
   var re = new RenderEngine(cm);
   var om = new OrientationManager();
   var n = new Network(cm);
 
   var ls = new LocalStream('ws://0.0.0.0:9090');
-  new DepthRender(ls, 8, re, om.obtain(ls));
-  new ForwardStream(ls, n, 4);
+  new DepthRender(ls, REDUCE, re, om.obtain(ls));
+  new ForwardStream(ls, n, SKIP);
 
   n.on('found', function(node){
-    node.render = new DepthRender(new RemoteStream(node), 8, re, om.obtain(node));
+    node.render = new DepthRender(new RemoteStream(node), REDUCE, re, om.obtain(node));
   });
 
   n.on('lost', function(node){
