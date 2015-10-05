@@ -30,10 +30,16 @@ function RenderEngine(debug, vr) {
   }
 
   if(vr) {
-    this.addVRControls();
+    this.addVRControls(this.camera);
     this.createVREffect();
   } else {
     this.addOrbitControls();
+
+    if(debug) {
+      this.vrCenter = new THREE.AxisHelper(50);
+      this.addVRControls(this.vrCenter);
+      this.scene.add(this.vrCenter);
+    }
   }
 
   function onWindowResize() {
@@ -125,8 +131,8 @@ RenderEngine.prototype.addOrbitControls = function(){
 /**
  * Add VR Controls.
  */
-RenderEngine.prototype.addVRControls = function(){
-  var controls = new THREE.VRControls(this.camera);
+RenderEngine.prototype.addVRControls = function(object){
+  var controls = new THREE.VRControls(object);
   controls.scale = 100; // from meters to centimeters
   this.controls.push(controls);
 
