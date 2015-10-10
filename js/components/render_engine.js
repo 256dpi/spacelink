@@ -155,8 +155,8 @@ RenderEngine.prototype.render = function(){
     } else {
       // begin undoing some settings by VREffect
       var size = this.renderer.getSize();
-      this.renderer.setViewport(0, 0, size.width, size.height );
-      this.renderer.setScissor(0, 0, size.width, size.height );
+      this.renderer.setViewport(0, 0, size.width, size.height);
+      this.renderer.setScissor(0, 0, size.width, size.height);
       this.renderer.enableScissorTest(false);
       // end undo
       this.renderer.render(this.scene, this.debugCamera);
