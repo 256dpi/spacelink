@@ -12,7 +12,7 @@ function RemoteStream(node){
   node.on('message', function(data){
     var data2 = str2ab(LZString.decompressFromUTF16(data.stream));
     if(data2) {
-      self.emit('data', new Uint16Array(data2));
+      self.emit('data', data2);
     }
   });
 
