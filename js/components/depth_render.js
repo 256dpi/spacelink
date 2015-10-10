@@ -23,8 +23,9 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
   this.particles.addAttribute('color', new THREE.BufferAttribute(this.colors, 3));
 
   this.material = new THREE.PointsMaterial({
-    size: reduce / 4,
-    vertexColors: THREE.VertexColors
+    size: reduce / 2,
+    vertexColors: THREE.VertexColors,
+    sizeAttenuation: true
   });
 
   this.system = new THREE.Points(this.particles, this.material);
