@@ -66,7 +66,9 @@ THREE.VRControls = function ( object, onError ) {
 	this.scale = 1;
 
 	this.update = function () {
-
+		// BEGIN HACK
+		var changed_position = false;
+		// END HACK
 		for ( var i = 0; i < vrInputs.length; i ++ ) {
 
 			var vrInput = vrInputs[ i ];
@@ -80,13 +82,18 @@ THREE.VRControls = function ( object, onError ) {
 			}
 
 			if ( state.position !== null ) {
-
+				// BEGIN HACK
+				changed_position = true;
+				// END HACK
 				object.position.copy( state.position ).multiplyScalar( scope.scale );
 
 			}
 
 		}
 
+		// BEGIN HACK
+		return changed_position;
+		// END HACK
 	};
 
 	this.resetSensor = function () {

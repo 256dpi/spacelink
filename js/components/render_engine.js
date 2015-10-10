@@ -22,7 +22,7 @@ RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
 RenderEngine.SENSOR_HEIGHT = 160;
 RenderEngine.SENSOR_DISTANCE = 300;
-RenderEngine.BODY_DISPLACEMENT = 0;
+RenderEngine.BODY_DISPLACEMENT = new THREE.Vector3(0, 0, -100);
 
 /**
  * Create Scene.
@@ -172,7 +172,12 @@ RenderEngine.prototype.update = function(){
   requestAnimationFrame(this.update.bind(this));
 
   this.orbitControls.update();
-  this.vrControls.update();
+
+  if(this.vrControls.update()) {
+    this.vrCamera.position.add(RenderEngine.BODY_DISPLACEMENT);
+  }
+
+  // sync helper
   this.vrCenter.position.copy(this.vrCamera.position);
   this.vrCenter.quaternion.copy(this.vrCamera.quaternion);
 
