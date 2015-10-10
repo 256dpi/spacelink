@@ -157,7 +157,6 @@ RenderEngine.prototype.render = function(){
       var size = this.renderer.getSize();
       this.renderer.setViewport(0, 0, size.width, size.height);
       this.renderer.setScissor(0, 0, size.width, size.height);
-      this.renderer.enableScissorTest(false);
       // end undo
       this.renderer.render(this.scene, this.debugCamera);
     }
@@ -172,11 +171,10 @@ RenderEngine.prototype.render = function(){
 RenderEngine.prototype.update = function(){
   requestAnimationFrame(this.update.bind(this));
 
+  this.orbitControls.update();
   this.vrControls.update();
   this.vrCenter.position.copy(this.vrCamera.position);
   this.vrCenter.quaternion.copy(this.vrCamera.quaternion);
-
-  this.orbitControls.update();
 
   this.render();
 };
