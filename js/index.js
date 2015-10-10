@@ -1,5 +1,5 @@
 $(function(){
-  var REDUCE = 8;
+  var REDUCE = 4;
   var SKIP = 4;
 
   var cm = new ConfigManager();
