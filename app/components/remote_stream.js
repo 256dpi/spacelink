@@ -1,3 +1,5 @@
+var Utils = require('./utils');
+var SimpleEmitter = require('./simple_emitter');
 /**
  * Create new RemoteStream client.
  *
@@ -10,7 +12,7 @@ function RemoteStream(node){
   var self = this;
 
   node.on('message', function(data){
-    var data2 = str2ab(LZString.decompressFromUTF16(data.stream));
+    var data2 = Utils.str2ab(LZString.decompressFromUTF16(data.stream));
     if(data2) {
       self.emit('data', data2);
     }

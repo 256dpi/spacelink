@@ -1,3 +1,4 @@
+var SimpleEmitter = require('./simple_emitter');
 /**
  * Create new LocalStream client.
  *

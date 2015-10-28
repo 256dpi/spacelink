@@ -18,7 +18,7 @@ var Logger = function(network, renderEngine, configManager){
   });
 
   setInterval(function(){
-    var g = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+    var g = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
     var s = self.renders + ' R/s' + g;
     s += '← ' + Math.round(self.inB / 1024 * 100) / 100 + ' KB/s' + g;
     s += '→ ' + Math.round(self.outB / 1024 * 100) / 100 + ' KB/s' + g;

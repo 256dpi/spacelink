@@ -1,3 +1,5 @@
+var SimpleEmitter = require('./simple_emitter');
+
 /**
  * Create a new Network.
  *

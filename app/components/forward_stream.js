@@ -1,3 +1,6 @@
+var Utils = require('./utils');
+var SimpleEmitter = require('./simple_emitter');
+
 /**
  * Create new ForwardStream client.
  *
@@ -13,7 +16,7 @@ function ForwardStream(stream, network, drop){
 
   stream.on('data', function(data){
     if(i == 0) {
-      var bytes = LZString.compressToUTF16(ab2str(data));
+      var bytes = LZString.compressToUTF16(Utils.ab2str(data));
       if(bytes) {
         network.broadcast({stream: bytes});
       }
