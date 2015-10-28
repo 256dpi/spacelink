@@ -41,7 +41,7 @@ ConfigManager.MAPPING = [
   { code: 32, name: 'reset' } // space
 ];
 
-ConfigManager.prototype.start = function(){
+ConfigManager.prototype.initialize = function(){
   var self = this;
   ConfigManager.MAPPING.forEach(function(config){
     if('state' in config) {
