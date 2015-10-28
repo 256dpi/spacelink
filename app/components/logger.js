@@ -4,6 +4,7 @@ var Logger = function(network, renderEngine, configManager){
   this.outB = 0;
 
   var self = this;
+  this.hud = $('#hud');
 
   network.on('in', function(bytes){
     self.inB += bytes;
@@ -27,7 +28,7 @@ var Logger = function(network, renderEngine, configManager){
     s += (configManager.get('mute') ? 'M' : '');
     s += (network.speaking ? 'S' : '');
 
-    $('#hud').html(s);
+    self.hud.html(s);
 
     self.renders = 0;
     self.inB = 0;
@@ -35,8 +36,7 @@ var Logger = function(network, renderEngine, configManager){
   }, 1000);
 
   configManager.on('debug', function(yes){
-    var hud = $('#hud');
-    yes ? hud.show() : hud.hide();
+    yes ? self.hud.show() : self.hud.hide();
   });
 };
 
