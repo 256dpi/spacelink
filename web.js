@@ -1,2 +1,5 @@
 var statik = require('statik');
-statik(process.env.PORT || 1337);
+statik({
+  port: process.env.PORT || 3333,
+  verbose: true
+});
