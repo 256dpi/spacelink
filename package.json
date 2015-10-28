@@ -9,6 +9,7 @@
     "auto-reload-brunch": ">= 1.0 < 1.9",
     "autoprefixer": "^5.2.0",
     "bower": "^1.6.5",
+    "brunch": "^1.8.5",
     "clean-css-brunch": ">= 1.0 < 1.9",
     "css-brunch": ">= 1.0 < 1.9",
     "javascript-brunch": ">= 1.0 < 1.9",
