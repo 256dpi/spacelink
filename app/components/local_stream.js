@@ -33,3 +33,5 @@ LocalStream.prototype = Object.create(SimpleEmitter.prototype);
 LocalStream.prototype.close = function(){
   this.ws.close();
 };
+
+module.exports = LocalStream;

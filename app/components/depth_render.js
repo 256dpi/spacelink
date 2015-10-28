@@ -1,3 +1,6 @@
+var RenderEngine = require('./render_engine');
+var DepthTransformation = require('./depth_transformation');
+
 /**
  * Create a DepthRender that draws and receives a depth image.
  *
@@ -50,3 +53,5 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
 DepthRender.prototype.stop = function(){
   this.renderEngine.scene.remove(this.system);
 };
+
+module.exports = DepthRender;

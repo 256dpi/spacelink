@@ -119,3 +119,5 @@ Node.prototype.send = function(data) {
   this.network.emit('out', bytes.length);
   this.channel.send(bytes);
 };
+
+module.exports = Network;

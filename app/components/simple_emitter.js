@@ -36,3 +36,5 @@ SimpleEmitter.prototype.emit = function(event, data) {
     cb(data);
   });
 };
+
+module.exports = SimpleEmitter;

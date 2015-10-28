@@ -1,15 +1,20 @@
 /**
+ * Collection of some utility functions.
+ */
+var Utils = {};
+
+/**
  * Get a query parameter.
  *
  * @param name
  * @returns {string}
  */
-function getParameterByName(name) {
+Utils.getParameterByName = function(name) {
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
     results = regex.exec(location.search);
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
+};
 
 /**
  * Convert ArrayBuffer to String.
@@ -17,23 +22,23 @@ function getParameterByName(name) {
  * @param buf
  * @returns {string}
  */
-function ab2str(buf) {
+Utils.ab2str = function(buf) {
   return String.fromCharCode.apply(null, new Uint16Array(buf));
-}
+};
 
 /**
  * Convert String to ArrayBuffer.
  * @param str
  * @returns {ArrayBuffer}
  */
-function str2ab(str) {
+Utils.str2ab = function(str) {
   var buf = new ArrayBuffer(str.length * 2);
   var bufView = new Uint16Array(buf);
   for (var i= 0, strLen=str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);
   }
   return buf;
-}
+};
 
 /**
  * Calcualte degress from radians.
@@ -41,15 +46,15 @@ function str2ab(str) {
  * @param deg
  * @returns {number}
  */
-function deg2rad(deg) {
+Utils.deg2rad = function(deg) {
   return deg * Math.PI / 180;
-}
+};
 
 /**
  * Hide inactive cursor:
  */
 
-function hideInactiveCursor() {
+Utils.hideInactiveCursor = function() {
   var mouseTimer = null;
   var cursorVisible = true;
 
@@ -71,4 +76,6 @@ function hideInactiveCursor() {
 
     mouseTimer = window.setTimeout(disappearCursor, 200);
   };
-}
+};
+
+module.exports = Utils;

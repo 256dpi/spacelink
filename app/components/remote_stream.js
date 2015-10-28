@@ -20,3 +20,5 @@ function RemoteStream(node){
 }
 
 RemoteStream.prototype = Object.create(SimpleEmitter.prototype);
+
+module.exports = RemoteStream;

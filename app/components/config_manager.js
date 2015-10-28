@@ -1,3 +1,5 @@
+var SimpleEmitter = require('./simple_emitter');
+
 function ConfigManager(){
   var self = this;
 
@@ -52,3 +54,5 @@ ConfigManager.prototype.start = function(){
 ConfigManager.prototype.get = function(name) {
   return this.cache[name];
 };
+
+module.exports = ConfigManager;

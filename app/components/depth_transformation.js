@@ -68,3 +68,5 @@ DepthTransformation.prototype.update = function(depth, color){
   this.positions.needsUpdate = true;
   this.colors.needsUpdate = true;
 };
+
+module.exports = DepthTransformation;

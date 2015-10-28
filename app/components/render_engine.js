@@ -1,3 +1,5 @@
+var Utils = require('./utils');
+
 /**
  * Create new RenderEngine.
  *
@@ -36,7 +38,7 @@ RenderEngine.prototype.createScene = function(){
     new THREE.MeshBasicMaterial({ color: 0x222222 })
   );
   this.floor.material.side = THREE.DoubleSide;
-  this.floor.rotation.x = deg2rad(90);
+  this.floor.rotation.x = Utils.deg2rad(90);
   this.floor.position.y = -RenderEngine.SENSOR_HEIGHT;
   this.scene.add(this.floor);
 };
@@ -109,8 +111,8 @@ RenderEngine.prototype.createHelpers = function(){
 RenderEngine.prototype.createControls = function(){
   this.orbitControls = new THREE.OrbitControls(this.debugCamera);
   this.orbitControls.target.set(0, -RenderEngine.SENSOR_HEIGHT, 0);
-  this.orbitControls.rotateUp(deg2rad(-70));
-  this.orbitControls.rotateLeft(deg2rad(90));
+  this.orbitControls.rotateUp(Utils.deg2rad(-70));
+  this.orbitControls.rotateLeft(Utils.deg2rad(90));
   this.orbitControls.dollyOut(5);
   this.orbitControls.panUp(150);
 };
@@ -191,3 +193,5 @@ RenderEngine.prototype.update = function(){
 RenderEngine.prototype.start = function(){
   this.update();
 };
+
+module.exports = RenderEngine;

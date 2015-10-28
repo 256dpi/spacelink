@@ -1,0 +1,12 @@
+{
+  "name": "spacelink",
+  "version": "0.1.0",
+  "main": "public/app.js",
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "three.js": "~0.72.0",
+    "SimpleWebRTC": "simplewebrtc#~1.15.3",
+    "lz-string": "~1.4.4"
+  },
+  "overrides": {}
+}

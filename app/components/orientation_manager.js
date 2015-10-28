@@ -1,3 +1,5 @@
+var Utils = require('./utils');
+
 /**
  * Create new OrientationManager.
  *
@@ -8,10 +10,10 @@ function OrientationManager(){
   this.map = {};
 
   [
-    deg2rad(0),
-    deg2rad(180),
-    deg2rad(90),
-    deg2rad(270)
+    Utils.deg2rad(0),
+    Utils.deg2rad(180),
+    Utils.deg2rad(90),
+    Utils.deg2rad(270)
   ].forEach(function(pos){
      self.map[pos] = null;
   });
@@ -51,3 +53,5 @@ OrientationManager.prototype.free = function(thing) {
     }
   });
 };
+
+module.exports = OrientationManager;

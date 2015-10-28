@@ -28,3 +28,5 @@ function ForwardStream(stream, network, drop){
 }
 
 ForwardStream.prototype = Object.create(SimpleEmitter.prototype);
+
+module.exports = ForwardStream;
