@@ -26,18 +26,16 @@ Network.prototype.connect = function(){
   this.webrtc = new SimpleWebRTC({
     media: {
       video: false,
-      audio: true
+      audio: false // true
     },
-    autoRequestMedia: false // true
+    autoRequestMedia: true
   });
 
   this.configManager.on('mute', function(yes){
     yes ? self.webrtc.mute() : self.webrtc.unmute();
   });
 
-  this.webrtc.on('readyToCall', function () {
-    self.webrtc.joinRoom('256dpi/spacelink');
-  });
+  self.webrtc.joinRoom('256dpi/spacelink');
 
   this.webrtc.on('speaking', function(){
     self.speaking = true;
