@@ -97,7 +97,7 @@ function Node(peer, network){
 
       channel.onmessage = function(event) {
         self.network.emit('in', event.data.length);
-        //self.emit('message', JSON.parse(event.data));
+        self.emit('message', JSON.parse(event.data));
       };
 
       if(ready) {
