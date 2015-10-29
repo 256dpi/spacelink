@@ -26,7 +26,7 @@ Network.prototype.connect = function(){
   this.webrtc = new SimpleWebRTC({
     media: {
       video: false,
-      audio: false // true
+      audio: true
     },
     autoRequestMedia: false // true
   });
