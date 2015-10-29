@@ -9,8 +9,8 @@ var RemoteStream = require('./components/remote_stream');
 var Utils = require('./components/utils');
 var Logger = require('./components/logger');
 
-var REDUCE = 4;
-var SKIP = 4;
+var REDUCE = 8;
+var SKIP = 8;
 
 var cm = new ConfigManager();
 var re = new RenderEngine(cm);
