@@ -26,9 +26,9 @@ Network.prototype.connect = function(){
   this.webrtc = new SimpleWebRTC({
     media: {
       video: false,
-      audio: true
+      audio: false // true
     },
-    autoRequestMedia: true
+    autoRequestMedia: false // true
   });
 
   this.configManager.on('mute', function(yes){
