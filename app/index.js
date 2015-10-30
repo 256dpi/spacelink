@@ -9,7 +9,7 @@ var RemoteStream = require('./components/remote_stream');
 var Utils = require('./components/utils');
 var Logger = require('./components/logger');
 
-var REDUCE = 8;
+var REDUCE = 4;
 var SKIP = 8;
 
 var cm = new ConfigManager();
