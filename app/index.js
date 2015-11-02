@@ -10,7 +10,7 @@ var Utils = require('./components/utils');
 var Logger = require('./components/logger');
 
 var REDUCE = 4;
-var SKIP = 8;
+var SKIP = 30;
 
 var cm = new ConfigManager();
 var re = new RenderEngine(cm);
