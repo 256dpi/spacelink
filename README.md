@@ -21,3 +21,13 @@
 4. Start local depthstream: `depthstream -r 4 -c -I 1`.
 5. Put kinect 3m in front of you and 1.6m above floor level.
 6. Load spacelink in your browser.
+
+## Controls
+
+Use the following controls to interact with the system:
+ 
+- `d`: Show debug informations like coordinates and measurements.
+- `enter`: Enable or disable rendering.
+- `v`: Enable or disable vr mode.
+- `space`: Reset Oculus position. (Do this while standing exactly 3m in front of the sensor.)
+- `dblclick`: Go fullscreen and enable VR barrel distortion.
