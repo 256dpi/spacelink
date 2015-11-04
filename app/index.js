@@ -18,13 +18,13 @@ var om = new OrientationManager();
 var n = new Network(cm);
 
 var ls = new LocalStream('ws://0.0.0.0:9090');
-new DepthRender(ls, REDUCE, re, om.obtain(ls));
+new DepthRender(ls, REDUCE, re, om.obtain(ls), 0);
 new ForwardStream(ls, n, SKIP);
 
 var l = new Logger(n, re, cm);
 
 n.on('found', function(node){
-  node.render = new DepthRender(new RemoteStream(node), REDUCE, re, om.obtain(node));
+  node.render = new DepthRender(new RemoteStream(node), REDUCE, re, om.obtain(node), RenderEngine.SENSOR_DISTANCE);
 });
 
 n.on('lost', function(node){

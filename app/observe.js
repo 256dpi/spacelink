@@ -16,7 +16,7 @@ var n = new Network(cm);
 var l = new Logger(n, re, cm);
 
 n.on('found', function(node){
-  node.render = new DepthRender(new RemoteStream(node), REDUCE, re, om.obtain(node));
+  node.render = new DepthRender(new RemoteStream(node), REDUCE, re, om.obtain(node), RenderEngine.SENSOR_DISTANCE);
 });
 
 n.on('lost', function(node){

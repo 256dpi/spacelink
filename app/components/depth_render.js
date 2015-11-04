@@ -8,9 +8,10 @@ var DepthTransformation = require('./depth_transformation');
  * @param reduce
  * @param renderEngine
  * @param rotation
+ * @param zOffset
  * @constructor
  */
-function DepthRender(stream, reduce, renderEngine, rotation) {
+function DepthRender(stream, reduce, renderEngine, rotation, zOffset) {
   var self = this;
   this.stream = stream;
   this.renderEngine = renderEngine;
@@ -33,7 +34,7 @@ function DepthRender(stream, reduce, renderEngine, rotation) {
 
   this.system = new THREE.Points(this.particles, this.material);
   this.system.rotation.y = rotation;
-  this.system.position.z = -RenderEngine.SENSOR_DISTANCE;
+  this.system.position.z = -RenderEngine.SENSOR_DISTANCE + zOffset;
   this.system.frustumCulled = false;
 
   this.renderEngine.scene.add(this.system);
