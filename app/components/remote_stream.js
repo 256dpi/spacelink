@@ -1,5 +1,6 @@
 var Utils = require('./utils');
 var SimpleEmitter = require('./simple_emitter');
+
 /**
  * Create new RemoteStream client.
  *

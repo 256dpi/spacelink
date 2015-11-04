@@ -23,9 +23,24 @@ function RenderEngine(configManager) {
 
 RenderEngine.prototype = Object.create(SimpleEmitter.prototype);
 
+/**
+ * The height of the sensor.
+ */
 RenderEngine.SENSOR_HEIGHT = 160;
+
+/**
+ * The distance to the sensor.
+ */
 RenderEngine.SENSOR_DISTANCE = 300;
+
+/**
+ * Body displacement vector for ego perspective.
+ */
 RenderEngine.BODY_DISPLACEMENT_EGO = new THREE.Vector3(0, 0, -50);
+
+/**
+ * Body displacement vector for third person perspective.
+ */
 RenderEngine.BODY_DISPLACEMENT_3P = new THREE.Vector3(0, 50, 50);
 
 /**

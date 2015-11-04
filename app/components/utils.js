@@ -53,7 +53,6 @@ Utils.deg2rad = function(deg) {
 /**
  * Hide inactive cursor:
  */
-
 Utils.hideInactiveCursor = function() {
   var mouseTimer = null;
   var cursorVisible = true;

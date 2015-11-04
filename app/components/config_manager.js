@@ -1,5 +1,10 @@
 var SimpleEmitter = require('./simple_emitter');
 
+/**
+ * Create a new ConfigManager.
+ *
+ * @constructor
+ */
 function ConfigManager(){
   var self = this;
 
@@ -33,6 +38,9 @@ function ConfigManager(){
 
 ConfigManager.prototype = Object.create(SimpleEmitter.prototype);
 
+/**
+ * The mapping.
+ */
 ConfigManager.MAPPING = [
   { code: 13, name: 'enabled', state: true }, // enter
   { code: 68, name: 'debug', state: false }, // d
@@ -41,6 +49,9 @@ ConfigManager.MAPPING = [
   { code: 32, name: 'reset' } // space
 ];
 
+/**
+ * Initialize the manager and emit default events once.
+ */
 ConfigManager.prototype.initialize = function(){
   var self = this;
   ConfigManager.MAPPING.forEach(function(config){
@@ -51,6 +62,11 @@ ConfigManager.prototype.initialize = function(){
   });
 };
 
+/**
+ * Get a certain configuration.
+ *
+ * @param name
+ */
 ConfigManager.prototype.get = function(name) {
   return this.cache[name];
 };

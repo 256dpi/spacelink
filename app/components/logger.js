@@ -1,3 +1,11 @@
+/**
+ * Create a new Logger.
+ *
+ * @param network
+ * @param renderEngine
+ * @param configManager
+ * @constructor
+ */
 var Logger = function(network, renderEngine, configManager){
   this.renders = 0;
   this.inB = 0;
